@@ -96,4 +96,26 @@ In the configuration pannel you need to use the expected hostaname as shown belo
 
 ![kafka-ui cluster-setup](kafka-ui-cluster-setup.png "kafka-ui cluster-setup").
 
+## Using Kafka with Docker
+
+A good example can be found at:
+https://github.com/conduktor/kafka-stack-docker-compose
+
+    git clone https://github.com/conduktor/kafka-stack-docker-compose
+    cd kafka-stack-docker-compose
+    nano zk-single-kafka-single.yml
+
+Replace `${DOCKER_HOST_IP:-127.0.0.1}` with your IP address, e.g. `${DOCKER_HOST_IP:-192.168.205.3}`.
+Then start the docker compose:
+
+    docker-compose -f zk-single-kafka-single.yml up
+
+You can configure kafka-ui to check the server availability.
+Then you can run the basic [quick-start examples](../examples/00-basic-example/README.md).
+
+
+
+
+
+
 
