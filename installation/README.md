@@ -18,6 +18,65 @@ cd kafka
 cd /opt/kafka
 ./bin/kafka-server-start.sh config/server.properties
 
+## Installing Kafka as a service
+
+First you need to setuo the service for Zookeeper
+
+    sudo nano  /etc/systemd/system/zookeeper.service
+
+Copyt the content below:
+
+```
+[Unit]
+Description=Apache Zookeeper server
+Documentation=http://zookeeper.apache.org
+Requires=network.target remote-fs.target
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+ExecStart=/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties
+ExecStop=/opt/kafka/bin/zookeeper-server-stop.sh
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Save the changes and exit.
+Then you need to install Kafka service
+
+    sudo nano  /etc/systemd/system/kafka.service
+
+Copyt the content below:
+
+```
+[Unit]
+Description=Apache Kafka Server
+Documentation=http://kafka.apache.org/documentation.html
+Requires=zookeeper.service
+
+[Service]
+Type=simple
+ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
+ExecStop=/opt/kafka/bin/kafka-server-stop.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+Save the changes and exit. Reload the services:
+
+    sudo systemctl daemon-reload
+    sudo systemctl enable zookeeper
+    sudo systemctl enable kafka
+    sudo systemctl start zookeeper
+    sudo systemctl start kafka
+
+Then check the newly created services:
+
+    journalctl -f -u zookeeper
+    journalctl -f -u kafka
+
 ## Monitoring tools based on Docker
 
 You can use [kafka-ui](https://github.com/provectus/kafka-ui):
