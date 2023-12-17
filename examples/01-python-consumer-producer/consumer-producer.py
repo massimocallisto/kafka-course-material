@@ -4,6 +4,8 @@ import multiprocessing
 
 from kafka import KafkaConsumer, KafkaProducer
 
+KAFKA_URL="192.168.205.3:9092"
+
 
 class Producer(threading.Thread):
     def __init__(self):
@@ -14,9 +16,10 @@ class Producer(threading.Thread):
         self.stop_event.set()
 
     def run(self):
-        producer = KafkaProducer(bootstrap_servers='192.168.17.111:9092')
+        producer = KafkaProducer(bootstrap_servers=KAFKA_URL)
 
         while not self.stop_event.is_set():
+            print("Sending data........")
             producer.send('my-topic', b"test")
             producer.send('my-topic', b"\xc2Hola, mundo!")
             time.sleep(1)
@@ -32,14 +35,18 @@ class Consumer(multiprocessing.Process):
         self.stop_event.set()
         
     def run(self):
-        consumer = KafkaConsumer(bootstrap_servers='192.168.17.111:9092',
+        consumer = KafkaConsumer(bootstrap_servers=KAFKA_URL,
                                  auto_offset_reset='earliest',
                                  consumer_timeout_ms=1000)
         consumer.subscribe(['my-topic'])
+        print("Consumer is going to wait for messages...")
 
         while not self.stop_event.is_set():
             for message in consumer:
-                print(message)
+                print("........Receiving data")
+                print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition,
+                                        message.offset, message.key,
+                                        message.value))
                 if self.stop_event.is_set():
                     break
 
@@ -48,8 +55,8 @@ class Consumer(multiprocessing.Process):
         
 def main():
     tasks = [
-        Producer(),
-        Consumer()
+        Consumer(),
+        Producer()
     ]
 
     for t in tasks:
