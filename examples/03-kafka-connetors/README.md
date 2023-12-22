@@ -28,6 +28,22 @@ curl localhost:8083/connector-plugins | jq
 curl localhost:8083/connectors
 ```
 
+## Console dump
+
+```
+./bin/kafka-topics.sh --describe \
+	--topic mqtt.echo \
+	--bootstrap-server localhost:9092
+```
+
+List the incoming messages:
+
+```
+./bin/kafka-console-consumer.sh \
+	--topic mqq.echo \
+	--bootstrap-server localhost:9092
+```
+
 ## Mongo plugin installation
 - https://contact-rajeshvinayagam.medium.com/mongodb-kafka-connectors-a-peek-561e2ed151a9
 
