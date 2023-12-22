@@ -61,6 +61,69 @@
 			"response": []
 		},
 		{
+			"name": "post_file_sink",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"file-sink\",\n    \"config\": {\n        \"connector.class\": \"org.apache.kafka.connect.file.FileStreamSinkConnector\",\n        \"tasks.max\": \"1\",\n        \"file\": \"/tmp/test.sink.txt\",\n        \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\n        \"value.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\n        \"topics\": \"mqtt.echo\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "del_file_sink",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"file-sink\",\n    \"config\": {\n        \"connector.class\": \"org.apache.kafka.connect.file.FileStreamSinkConnector\",\n        \"tasks.max\": \"1\",\n        \"file\": \"/tmp/test.sink.txt\",\n        \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\n        \"value.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\n        \"topics\": \"mqtt.echo\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors/file-sink",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors",
+						"file-sink"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "post_mongo",
 			"request": {
 				"method": "POST",
@@ -116,6 +179,30 @@
 		},
 		{
 			"name": "connector_mqtt_status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors/mqtt-source/status",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors",
+						"mqtt-source",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connector_filresink_status",
 			"request": {
 				"method": "GET",
 				"header": [],

@@ -86,7 +86,7 @@ if __name__ == "__main__":
         .option("checkpointLocation", "./check")\
         .trigger(processingTime='5 seconds').start()
     
-    query2=words.writeStream.foreachBatch(write_mongo_row).start()
+    #query2=words.writeStream.foreachBatch(write_mongo_row).start()
 
 
     #query.awaitTermination()

@@ -28,15 +28,41 @@ curl localhost:8083/connector-plugins | jq
 curl localhost:8083/connectors
 ```
 
-## Console dump
+## Submit the configuration via Postman
+Import the [Kafka.postman_collection.json](Kafka.postman_collection.json) in Pstman to submit the configuration described below. Remember to replace the IP address with your VM IP address. 
+
+## MQTT Connector
+- https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt
+
+Download the connector from https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt, unpack and copy the lib content in `/opt/kafka/plugins` (create a sub-folder `mqtt-connector`).
+
+The post the connector configuration:
 
 ```
-./bin/kafka-topics.sh --describe \
-	--topic mqtt.echo \
-	--bootstrap-server localhost:9092
+{
+  "name": "mqtt-source",
+  "config": {
+    "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+    "tasks.max": "1",
+    "mqtt.server.uri": "tcp://localhost:1883",
+    "mqtt.topics": "/#",
+    "kafka.topic": "mqtt.echo",
+    "value.converter":"org.apache.kafka.connect.converters.ByteArrayConverter",
+    "key.converter":"org.apache.kafka.connect.storage.StringConverter",
+    "key.converter.schemas.enable" : "false",
+    "value.converter.schemas.enable" : "false",
+    "confluent.topic.bootstrap.servers": "localhost:9092",
+    "confluent.topic.replication.factor": "1",
+    "confluent.license": ""
+  }
+}
 ```
 
-List the incoming messages:
+Then submit to the worker:
+
+    curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d @./mqtt_connector.json
+
+The below example will allow print the new messages in the console.
 
 ```
 ./bin/kafka-console-consumer.sh \
@@ -47,9 +73,7 @@ List the incoming messages:
 ## File sink
 - https://docs.confluent.io/platform/current/connect/filestream_connector.html
 
-TODO
-Copy jar
-
+Copy jar from `/opt/kafka/libs/connect-file-3.6.1.jar` to `/opt/kafka/plugins`. Then post the following JSON:
 
 ```
 {

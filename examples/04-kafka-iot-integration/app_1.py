@@ -86,5 +86,5 @@ spark.streams.awaitAnyTermination()
 '''
 spark-submit \
   --packages org.apache.spark:spark-sql-kafka-0-10_2.13:3.2.4 \
-  app_0.py
+  app_1.py
 '''
