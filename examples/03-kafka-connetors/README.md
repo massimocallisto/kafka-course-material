@@ -1,13 +1,8 @@
-# Elasticsearch sink example
-
-Source:
-- https://docs.confluent.io/current/connect/kafka-connect-elasticsearch/index.html
-- https://www.confluent.io/blog/kafka-elasticsearch-connector-tutorial/?_ga=2.136982519.634568600.1590446777-227719131.1589011689
-
+# Kafka Connectors Example
 
 ## Requirements
 
-### Kafka Cluster 
+**Kafka Cluster**
 It is assemed that Kafka is already running and listening on port 9092.
 Set also in console the following variable.
 
@@ -17,33 +12,7 @@ Install also this package (JSON processor):
     
     sudo apt-get install jq
 
-### Elastic search
-It is assumed that you are running an Elasticsearch cluster listening on http://localhost:9200.
-For a quickstart see `docker-compose.yml` (the mqtt-bridge is optional).
-In order to preserve mapping you should also created an index (named mqtt according to the example below). 
-This is not necessary but if you have nested fields it would be better to do it.
-To post an index you can perform the following index post creation:
 
-```
-curl -s -X PUT -H 'Content-Type: application/json' http://192.168.17.111:9200/mqtt -d @'{
-  "settings": {
-    "index": {
-      "number_of_shards": 5,
-      "number_of_replicas": 1
-    }
-  },
-  "mappings": {
-    "properties": {
-      "m": {
-        "type": "nested"
-      },
-      "r": {
-        "type": "nested"
-      }
-    }
-  }
-}'
-```
 
 ## Start connector
 One can start a standalone connector that takes in input a config file with main parameters or a distributed connector that will wait for incoming request via REST API calls. In this example we are going to use a distribute connector.
@@ -60,6 +29,7 @@ curl localhost:8083/connectors
 ```
 
 ## Mongo plugin installation
+- https://contact-rajeshvinayagam.medium.com/mongodb-kafka-connectors-a-peek-561e2ed151a9
 
 Download source package from https://www.confluent.io/hub/mongodb/kafka-connect-mongodb/ and unpack in some folder `MONGO_CONNECTOR`.
 Copy the content of `MONGO_CONNECTOR/lib into /opt/kafka/plugins/mongodb-connector`
@@ -110,6 +80,39 @@ To stop and delete the connector run:
 
 
 ## Elastic plugin installation (to validate)
+Source:
+- https://docs.confluent.io/current/connect/kafka-connect-elasticsearch/index.html
+- https://www.confluent.io/blog/kafka-elasticsearch-connector-tutorial/?_ga=2.136982519.634568600.1590446777-227719131.1589011689
+
+**Note**: you need a running instance of Elasticsearch. See e.g. https://github.com/massimocallisto/elastic_iot_poc/tree/main/single_instance
+
+### Elastic search configuration
+In order to preserve mapping you should also created an index (named mqtt.echo according to the example below). 
+This is not necessary but if you have nested fields it would be better to do it.
+To post an index you can perform the following index post creation:
+
+```
+curl -s -X PUT -H 'Content-Type: application/json' http://localhost:9200/mqtt.echo -d @'{
+  "settings": {
+    "index": {
+      "number_of_shards": 5,
+      "number_of_replicas": 1
+    }
+  },
+  "mappings": {
+    "properties": {
+      "m": {
+        "type": "nested"
+      },
+      "r": {
+        "type": "nested"
+      }
+    }
+  }
+}'
+```
+
+### Plugin configuration
 
 Download source package from https://www.confluent.io/hub/confluentinc/kafka-connect-elasticsearch/ and unpack in some folder `ELA_CONNECTOR`.
 Copy the content of `ELA_CONNECTOR/lib into /opt/kafka/plugins/elasticsearch-connector`
@@ -123,7 +126,7 @@ Start/restart the distributed connector and check if the plugin is now available
 
 If you can read `io.confluent.connect.elasticsearch.ElasticsearchSinkConnector` then it is ok.
 
-## Run the connector
+### Run the connector
 
 First provide a configuration as JOSN file to submit to the worker connector. Save it as `~/ela_connector.json`
 
