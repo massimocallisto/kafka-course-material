@@ -20,8 +20,8 @@ spark.sparkContext.setLogLevel("ERROR")
 df_infn = spark \
       .readStream \
       .format("kafka") \
-      .option("kafka.bootstrap.servers", "192.168.17.111:9092") \
-      .option("subscribe", "mqtt") \
+      .option("kafka.bootstrap.servers", "192.168.205.3:9092") \
+      .option("subscribe", "mqtt.echo") \
       .option("startingOffsets", "earliest") \
       .load() \
       .selectExpr("CAST(key AS STRING)","CAST(value AS STRING)") 
@@ -83,3 +83,8 @@ query_topic = topic_infn.writeStream.format("console").outputMode("Update").trig
 spark.streams.awaitAnyTermination()
 
 
+'''
+spark-submit \
+  --packages org.apache.spark:spark-sql-kafka-0-10_2.13:3.2.4 \
+  app_0.py
+'''

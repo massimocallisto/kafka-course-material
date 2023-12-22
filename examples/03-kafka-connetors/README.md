@@ -40,9 +40,40 @@ List the incoming messages:
 
 ```
 ./bin/kafka-console-consumer.sh \
-	--topic mqq.echo \
+	--topic mqtt.echo \
 	--bootstrap-server localhost:9092
 ```
+
+## File sink
+- https://docs.confluent.io/platform/current/connect/filestream_connector.html
+
+TODO
+Copy jar
+
+
+```
+{
+    "name": "file-sink",
+    "config": {
+        "connector.class": "org.apache.kafka.connect.file.FileStreamSinkConnector",
+        "tasks.max": "1",
+        "file": "/tmp/test.sink.txt",
+        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "topics": "mqtt.echo"
+    }
+}
+```
+
+Then submit to the worker:
+
+    curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d @./filesink_connector.json
+    curl -s -X GET -H 'Content-Type: application/json' http://localhost:8083/connectors/file-sink/status
+
+Then check the file content:
+
+    tail -f /tmp/test.sink.txt
+
 
 ## Mongo plugin installation
 - https://contact-rajeshvinayagam.medium.com/mongodb-kafka-connectors-a-peek-561e2ed151a9

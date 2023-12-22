@@ -42,7 +42,7 @@ df = spark \
       .readStream \
       .format("kafka") \
       .option("kafka.bootstrap.servers", "192.168.17.111:9092") \
-      .option("subscribe", "mqtt") \
+      .option("subscribe", "mqtt.echo") \
       .option("startingOffsets", "earliest") \
       .load() \
       .selectExpr("CAST(key AS STRING)","CAST(value AS STRING)") 
