@@ -2,7 +2,7 @@ from kafka import KafkaConsumer
 
 # Create a KafkaConsumer instance
 consumer = KafkaConsumer(
-    bootstrap_servers=['primary:9092'], 
+    bootstrap_servers=['192.168.205.3:9092'], 
     auto_offset_reset='earliest', 
     enable_auto_commit=False
 )
@@ -14,7 +14,7 @@ consumer.subscribe(topics=['my-topic'])
 while True:
     #for message in consumer:
     #   print(message)                                                  
-    msg = consumer.poll(timeout_ms=1000)
+    msg = consumer.poll(timeout_ms=10000)
     if msg:
         for tp, messages in msg.items():
             for message in messages:

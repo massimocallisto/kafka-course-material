@@ -5,7 +5,7 @@
     "tasks.max": "1",
     "mqtt.server.uri": "tcp://localhost:1883",
     "mqtt.topics": "/#",
-    "kafka.topic": "mqtt",
+    "kafka.topic": "mqtt.echo",
     "value.converter":"org.apache.kafka.connect.converters.ByteArrayConverter",
     "key.converter":"org.apache.kafka.connect.storage.StringConverter",
     "key.converter.schemas.enable" : "false",

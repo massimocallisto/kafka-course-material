@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "1ee3350a-3cb1-4c9d-9822-f9dbc1c49138",
+		"name": "Kafka",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26179825",
+		"_collection_link": "https://grey-robot-281325.postman.co/workspace/Team-Workspace~98032c3a-5441-456f-8cba-930c1e4c0a92/collection/26179825-1ee3350a-3cb1-4c9d-9822-f9dbc1c49138?action=share&source=collection_link&creator=26179825"
+	},
+	"item": [
+		{
+			"name": "connector",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_mqtt",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"mqtt-source\",\n    \"config\": {\n        \"connector.class\": \"io.confluent.connect.mqtt.MqttSourceConnector\",\n        \"tasks.max\": \"1\",\n        \"mqtt.server.uri\": \"tcp://localhost:1883\",\n        \"mqtt.topics\": \"/#\",\n        \"kafka.topic\": \"mqtt.echo\",\n        \"value.converter\": \"org.apache.kafka.connect.converters.ByteArrayConverter\",\n        \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\n        \"key.converter.schemas.enable\": \"false\",\n        \"value.converter.schemas.enable\": \"false\",\n        \"confluent.topic.bootstrap.servers\": \"localhost:9092\",\n        \"confluent.topic.replication.factor\": \"1\",\n        \"confluent.license\": \"\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post_mongo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"mongo-sink\",\n    \"config\": {\n      \"connector.class\": \"com.mongodb.kafka.connect.MongoSinkConnector\",\n      \"key.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\n      \"value.converter\": \"org.apache.kafka.connect.storage.StringConverter\",\n      \"topics\": \"mqtt.echo\",\n      \"connection.uri\": \"mongodb://192.168.205.3\",\n      \"database\": \"mqtt_echo\",\n      \"collection\": \"data\",\n      \"schema.enable\": \"false\"\n    }\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connector_mqtt",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors/mqtt-source",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors",
+						"mqtt-source"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connector_mqtt_status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors/mqtt-source/status",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors",
+						"mqtt-source",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connectormongo_status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.205.3:8083/connectors/mongo-sink/status",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connectors",
+						"mongo-sink",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "connector-plugins",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.205.3:8083/connector-plugins",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"205",
+						"3"
+					],
+					"port": "8083",
+					"path": [
+						"connector-plugins"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

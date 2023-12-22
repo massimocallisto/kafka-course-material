@@ -4,7 +4,7 @@
 
 See APACHE [KAFKA QUICKSTART](https://kafka.apache.org/quickstart) tutorial.
 
-
+```
 wget https://dlcdn.apache.org/kafka/3.6.1/kafka_2.13-3.6.1.tgz
 tar -xzvf kafka_2.13-3.6.1.tgz 
 sudo mv kafka_2.13-3.6.1 /opt/
@@ -12,11 +12,14 @@ cd /opt
 sudo ln -s kafka_2.13-3.6.1 kafka
 cd kafka
 ./bin/zookeeper-server-start.sh config/zookeeper.properties 
+```
 
 (from another terminal)
 
+```
 cd /opt/kafka
 ./bin/kafka-server-start.sh config/server.properties
+```
 
 ## Installing Kafka as a service
 

@@ -7,7 +7,9 @@ Source:
 
 ## Requirements
 It is assemed that Kafka is already running and listening on port 9092.
-Set also in console the following variable.
+A running MQTT broker is also required. See for example the simulator project at link https://github.com/massimocallisto/iot-simulator
+
+Set in the console the following variable:
 
     KAFKA_HOME=/opt/kafka
   
@@ -35,7 +37,7 @@ Source:
 - https://docs.confluent.io/current/connect/managing/community.html
 
 Download source package from https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt and unpack in some folder MQTT_CONNECTOR.
-Copy the content of MQTT_CONNECTOR/lib into /opt/kafka/plugins/mqtt-connector
+Copy the content of MQTT_CONNECTOR/lib into xmqtt-connector
 
 Start/restart the distributed connector and check if the plugin is now available:
 
@@ -46,7 +48,7 @@ If you can read `io.confluent.connect.mqtt.MqttSinkConnector` then it is ok.
 ## Run MQTT connector
 - https://github.com/kaiwaehner/kafka-connect-iot-mqtt-connector-example/blob/master/live-demo-kafka-connect-iot-mqtt-connector.adoc
 
-To run the connector we have to define a configuration as JOSN file to submit to the worker connector. Save it as `~/mqtt_connect.json`
+To run the connector we have to define a configuration as JOSN file to submit to the worker connector. Save it as `~/mqtt_connector.json`
 
 **Note**: we have to use as topic `/#` otherwise only `#` do not gives all the messages as expected.
 
@@ -73,21 +75,25 @@ To run the connector we have to define a configuration as JOSN file to submit to
 
 Then submit to the worker:
 
-    curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d @/home/filippetti/~/mqtt_connect.json
+    curl -s -X POST -H 'Content-Type: application/json' http://localhost:8083/connectors -d @mqtt_connector.json
 
 Verify that it is working:
 
     curl -s "http://localhost:8083/connectors"
     curl -s "http://localhost:8083/connectors/mqtt-source/status"
 
-The connetor is already running. You should not create the topic `mqtt.echo`
+The connetor is already running. 
+<!-- 
+You should now create the topic `mqtt.echo`
 
-    $KAFKA_HOME/bin/kafka-topics.sh --zookeeper localhost:2181 --describe
+    $KAFKA_HOME/bin/kafka-topics.sh --bootstrap-server=localhost:9092 --list
 
 If none create it:
 
-    $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic mqtt.echo
-
+    $KAFKA_HOME/bin/kafka-topics.sh --create \
+	--topic mqtt.echo \
+	--bootstrap-server localhost:9092
+-->
 
 # MQTT broker
 Using docker just run:
@@ -98,16 +104,15 @@ Using docker just run:
 # Dump messages
 From the console if you subscribe with a simple consumer you should see messages sent to the broker
 
-    $KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mqtt.echo --from-beginning
+    $KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic mqtt --from-beginning
 
-From a mqtt client publish some message:
+From a mqtt client publish some message. 
 
     mqtt_pub -h localhost -t "atopic" -m "a message"
 
-# Kafka Connect UI Monitor 
+You can also use the simulator project https://github.com/massimocallisto/iot-simulator
 
-```
-docker run --rm -it -p 8000:8000 \
-           -e "CONNECT_URL=http://192.168.17.111:8083" \
-           landoop/kafka-connect-ui
-```		   
+## Add Elastic search connector
+
+- https://www.confluent.io/hub/confluentinc/kafka-connect-elasticsearch
+

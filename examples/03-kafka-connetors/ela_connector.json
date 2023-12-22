@@ -3,10 +3,9 @@
   "config": {
     "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
     "tasks.max": "1",
-    "topics": "mqtt",
+    "topics": "mqtt.echo",
     "key.ignore": "true",
     "connection.url": "http://localhost:9200",
-    "type.name":"_doc",
     "name":"ela",
     "schema.ignore":"true",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
