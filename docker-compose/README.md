@@ -1,5 +1,7 @@
 # Running Kafka with Docker
 
+Source: derived from https://github.com/confluentinc/cp-all-in-one/tree/7.5.0-post/cp-all-in-one-community
+
 Tis folder contains a docker-compose file to run the following Kafka components:
 * zookeeper service for Kafka
 * broker a single Kafka cluster node
