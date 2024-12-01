@@ -2,6 +2,23 @@
 
 The examples are the ones of https://kafka.apache.org/quickstart 
 
+## Docker execution
+Note that if you are running the cluster with Docker, you will need to run the following commands from the Broker container.
+
+1. Login to the container:
+
+		docker exec -it broker bash
+
+2. In each commend remove `./bin/`, replace `localhost:9092` with `broker:29092`. For instance:
+
+```
+kafka-topics.sh --create \
+	--topic quickstart-events \
+	--bootstrap-server broker:29092
+```
+
+
+## Command execution
 
 Create a topic `quickstart-events`
 

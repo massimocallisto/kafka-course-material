@@ -34,6 +34,8 @@ Import the [Kafka.postman_collection.json](Kafka.postman_collection.json) in Pst
 ## MQTT Connector
 - https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt
 
+**Note**: the connector require a license key. However, you can use this connector for a 30-day trial period without a license key.
+
 Download the connector from https://www.confluent.io/hub/confluentinc/kafka-connect-mqtt, unpack and copy the lib content in `/opt/kafka/plugins` (create a sub-folder `mqtt-connector`).
 
 The post the connector configuration:
