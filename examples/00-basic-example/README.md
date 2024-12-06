@@ -9,10 +9,10 @@ Note that if you are running the cluster with Docker, you will need to run the f
 
 		docker exec -it broker bash
 
-2. In each commend remove `./bin/`, replace `localhost:9092` with `broker:29092`. For instance:
+2. In each commend remove `./bin/`, remove `.sh`, replace `localhost:9092` with `broker:29092`. For instance:
 
 ```
-kafka-topics.sh --create \
+kafka-topics --create \
 	--topic quickstart-events \
 	--bootstrap-server broker:29092
 ```
